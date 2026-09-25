@@ -55,6 +55,16 @@ not assumptions — they change specifics in Phases 2, 3, and 6 below.
   computation need real engineering care (vectorized/indexed operations),
   not just a sound algorithm, or Phase 2 won't finish inside the challenge
   window.
+- **Running on Azure (`Standard_D16s_v5`, 16 vCPU / 64 GiB) via an
+  existing, already-verified Azure Education credit — not the 16GB
+  laptop.** See `AZURE_SETUP.md`. The credit pool is large enough (~12,000+
+  hours at this VM's rate) that the earlier local-vs-cloud time tradeoff
+  no longer applies; size up to `Standard_E16s_v5` (128 GiB) without much
+  hesitation if Phase 3's memory check below suggests it's needed, rather
+  than fighting it with chunking discipline that local hardware would have
+  forced. The Phase 3 memory-check step is still good practice regardless
+  of where it runs — it's cheaper to catch a memory problem on a small
+  slice than on a multi-hour full run, cloud or not.
 - **Missing values are real, not hypothetical:** ~3.3% of Source 2/3
   records are missing `business_address` (comparable rate in train and
   test), and a small number are missing `business_name` outright. Source 1
@@ -163,6 +173,19 @@ per split, this is a feature table in the tens to low hundreds of millions
 of rows. Compute features with vectorized/batched operations (pandas/numpy
 vector ops, or a columnar tool if pandas gets too slow), not row-wise
 `.apply()` over individual pairs — that will not finish at this scale.
+
+**Memory check, first — before writing the full feature set.** Running
+locally on 16GB RAM. Before building out all the features below, run a
+small end-to-end slice (e.g. one country partition, or a 5-10% sample of
+candidates) with just 3-4 representative features, and measure actual
+peak RSS, not an estimate — then project that to the full row/column count
+the same way Phase 2's runtime projection was done. If the projection
+doesn't comfortably fit in 16GB with headroom for LightGBM training
+alongside it, use chunked/streaming construction (process and write
+Parquet in batches rather than building one in-memory DataFrame) or
+downcast dtypes (float32/int8 where the range allows) before scaling up —
+confirm the fix with a re-measurement, not just the fact that it seems
+like it should help.
 
 For every (Source 1, candidate) pair surviving Phase 2, compute:
 - **Name**: Levenshtein / edit distance (raw + normalized), Jaro-Winkler,

@@ -10,7 +10,9 @@ xgboost>=2.0
 catboost>=1.2
 rapidfuzz>=3.0        # Levenshtein / Jaro-Winkler / token-set ratio
 jellyfish>=1.0         # phonetic encodings (Soundex, NYSIIS, Metaphone)
+regex>=2023.0          # Unicode regex support for Indic/Latin scripts
 tqdm>=4.65
+pyarrow>=12.0
 
 # Tier 2 only — uncomment if/when Phase 12 (borderline re-ranking) is
 # actually reached, and record the specific checkpoint's name + license

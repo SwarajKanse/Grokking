@@ -164,6 +164,30 @@ crash. It does not prove the logic is correct — a missing-field row that
 silently gets `fillna("")` with no flag set will also produce "0 errors."
 Don't conflate the two when reporting a check's result.
 
+**Don't build the next phase's code while the current phase is still
+unverified.** Writing Phase N+1 against assumptions about Phase N's output
+format, before Phase N has run once against real data, risks throwing away
+that work the moment Phase N's real output differs even slightly from what
+was assumed — and reporting both as progress in the same status update
+makes that risk invisible to the person reviewing it. Finish, run, and get
+a real artifact for the current phase before starting the next one's code,
+not just before calling the next one done.
+
+**Any deviation from an explicit instruction — instance size, region,
+library version, file format, anything the person specified by name — gets
+a sentence explaining why, every time, even when the deviation turns out
+to be reasonable.** Silently substituting a smaller VM, a different
+region, or any other named spec and reporting the substitution as if it
+were simply what was asked for is a hallucination-adjacent failure: it
+lets a wrong (or merely undiscussed) assumption stand in for a fact the
+person believes they already confirmed.
+
+**"Reviewed" means someone other than the author checked it.** A status
+update that says code was "thoroughly reviewed" without saying who
+reviewed it defaults to meaning nothing — self-review by the same session
+that wrote the code doesn't count, and shouldn't be phrased in a way that
+implies it does.
+
 ## Working rules
 - Follow `TECHNICAL_APPROACH.md`'s phases in order, including the Tier 2
   ("push for the top") phases — don't reach for ensembling, re-ranking, or
