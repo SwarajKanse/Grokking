@@ -1,0 +1,28 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Large Datasets (>100MB cannot be pushed to GitHub)
+dataset/
+*.tsv
+output/*.tsv
+
+# SSH Keys and Credentials (Mandated by AWS_SETUP.md)
+*.pem
+*.key
+*.env
+.env
+aws_credentials*
+
+# OS / Editor files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Virtual environments
+venv/
+.venv/
+env/
