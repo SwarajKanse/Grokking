@@ -26,3 +26,11 @@ desktop.ini
 venv/
 .venv/
 env/
+
+# Large feature files and artifacts (>100MB)
+*.parquet
+*.cbm
+experiments/*model*
+experiments/*.log
+scratch/
+output/

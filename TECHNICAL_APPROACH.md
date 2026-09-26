@@ -55,16 +55,13 @@ not assumptions — they change specifics in Phases 2, 3, and 6 below.
   computation need real engineering care (vectorized/indexed operations),
   not just a sound algorithm, or Phase 2 won't finish inside the challenge
   window.
-- **Running on Azure (`Standard_D16s_v5`, 16 vCPU / 64 GiB) via an
-  existing, already-verified Azure Education credit — not the 16GB
-  laptop.** See `AZURE_SETUP.md`. The credit pool is large enough (~12,000+
-  hours at this VM's rate) that the earlier local-vs-cloud time tradeoff
-  no longer applies; size up to `Standard_E16s_v5` (128 GiB) without much
-  hesitation if Phase 3's memory check below suggests it's needed, rather
-  than fighting it with chunking discipline that local hardware would have
-  forced. The Phase 3 memory-check step is still good practice regardless
-  of where it runs — it's cheaper to catch a memory problem on a small
-  slice than on a multi-hour full run, cloud or not.
+- **Running on Azure (`Standard_E4s_v3`, 4 vCPU / 32 GiB) — the actual
+  ceiling this student account can provision, not an open choice.** More
+  RAM than the original 16GB laptop, fewer cores than initially planned.
+  The Phase 3 memory-check step below still matters, arguably more: with
+  no larger size available to step up to, catching a memory problem on a
+  small slice — before committing hours to a full run that might not fit
+  — is the only real safety net left.
 - **Missing values are real, not hypothetical:** ~3.3% of Source 2/3
   records are missing `business_address` (comparable rate in train and
   test), and a small number are missing `business_name` outright. Source 1
